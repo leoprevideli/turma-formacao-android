@@ -9,7 +9,6 @@ import java.util.List;
 import br.com.cast.turmaformacao.taskmanager.model.entities.Label;
 import br.com.cast.turmaformacao.taskmanager.model.entities.Task;
 import br.com.cast.turmaformacao.taskmanager.model.persistence.DatabaseHelper;
-import br.com.cast.turmaformacao.taskmanager.model.persistence.label.LabelContract;
 
 public final class TaskRepository {
 
