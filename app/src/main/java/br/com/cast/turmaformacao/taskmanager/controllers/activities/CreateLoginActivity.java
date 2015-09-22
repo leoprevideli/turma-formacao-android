@@ -1,5 +1,6 @@
 package br.com.cast.turmaformacao.taskmanager.controllers.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -27,6 +28,8 @@ public class CreateLoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_login);
 
+        initUser();
+
         editTextNewUsername = (EditText) findViewById(R.id.editTextNewUsername);
         editTextNewPassword = (EditText) findViewById(R.id.editTextNewPassword);
         bindButtonSaveNewUser();
@@ -43,16 +46,23 @@ public class CreateLoginActivity extends AppCompatActivity {
                     bindNewUser();
                     UserBusinessService.save(newUser);
                     Toast.makeText(CreateLoginActivity.this, R.string.msg_save_success, Toast.LENGTH_LONG).show();
+
+                    Intent redirectToLogin = new Intent(CreateLoginActivity.this, LoginActivity.class);
+                    startActivity(redirectToLogin);
                 }
             }
         });
     }
 
-    public void bindNewUser() {
-        if (newUser == null) {
-            newUser = new User();
+    private void initUser() {
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            this.newUser = (User) extras.getParcelable(PARAM_USER);
         }
+        this.newUser = this.newUser == null ? new User() : this.newUser;
+    }
 
+    public void bindNewUser() {
         newUser.setUsername(editTextNewUsername.getText().toString());
         newUser.setPassword(editTextNewPassword.getText().toString());
     }

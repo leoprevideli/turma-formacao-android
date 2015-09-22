@@ -4,8 +4,12 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.List;
+
 import br.com.cast.turmaformacao.taskmanager.model.entities.Label;
+import br.com.cast.turmaformacao.taskmanager.model.entities.Task;
 import br.com.cast.turmaformacao.taskmanager.model.persistence.DatabaseHelper;
+import br.com.cast.turmaformacao.taskmanager.model.persistence.task.TaskContract;
 
 public final class LabelRepository {
 
@@ -43,5 +47,17 @@ public final class LabelRepository {
         db.close();
         databaseHelper.close();
         return label;
+    }
+
+    public static List<Label> getAll() {
+        DatabaseHelper databaseHelper = DatabaseHelper.getInstance();
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+
+        Cursor cursor = db.query(LabelContract.TABLE, LabelContract.COLUMNS, null, null, null, null, null);
+        List<Label> values = LabelContract.getLabels(cursor);
+
+        db.close();
+        databaseHelper.close();
+        return values;
     }
 }

@@ -1,7 +1,11 @@
 package br.com.cast.turmaformacao.taskmanager.model.services;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
+import br.com.cast.turmaformacao.taskmanager.model.entities.Color;
+import br.com.cast.turmaformacao.taskmanager.model.entities.Label;
 import br.com.cast.turmaformacao.taskmanager.model.entities.Task;
 import br.com.cast.turmaformacao.taskmanager.model.persistence.task.TaskRepository;
 

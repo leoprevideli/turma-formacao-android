@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.List;
+
 import br.com.cast.turmaformacao.taskmanager.R;
 import br.com.cast.turmaformacao.taskmanager.controllers.adapters.ColorListAdapter;
 import br.com.cast.turmaformacao.taskmanager.model.entities.Color;
@@ -98,8 +100,7 @@ public class LabelFormActivity extends AppCompatActivity {
         if (!FormHelper.checkRequireFields(getString(R.string.msg_required), editTextName)) {
             bindLabel();
             LabelBusinessService.save(label);
-            Label label = LabelBusinessService.getById(1l);
-            Toast.makeText(LabelFormActivity.this, label.toString(), Toast.LENGTH_SHORT).show();
+            finish();
         }
     }
 }

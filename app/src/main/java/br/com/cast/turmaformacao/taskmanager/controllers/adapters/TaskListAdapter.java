@@ -9,7 +9,11 @@ import android.widget.TextView;
 import java.util.List;
 
 import br.com.cast.turmaformacao.taskmanager.R;
+import br.com.cast.turmaformacao.taskmanager.model.entities.Color;
+import br.com.cast.turmaformacao.taskmanager.model.entities.Label;
 import br.com.cast.turmaformacao.taskmanager.model.entities.Task;
+import br.com.cast.turmaformacao.taskmanager.model.persistence.task.TaskRepository;
+import br.com.cast.turmaformacao.taskmanager.model.services.TaskBusinessService;
 
 public class TaskListAdapter extends BaseAdapter {
 
@@ -46,12 +50,14 @@ public class TaskListAdapter extends BaseAdapter {
         Task task = getItem(position);
         View taskListItemView = context.getLayoutInflater().inflate(R.layout.list_item_task, parent, false);
 
-        TextView textViewId = (TextView) taskListItemView.findViewById(R.id.textViewId);
-        textViewId.setText(task.getId().toString());
+        View viewId = (View) taskListItemView.findViewById(R.id.viewId);
+        int hexColor = android.graphics.Color.parseColor(TaskRepository.getLabelByTaskId(task.getId()).getColor().getHex());
+        viewId.setBackgroundColor(hexColor);
 
         TextView textViewName = (TextView) taskListItemView.findViewById(R.id.textViewName);
         textViewName.setText(task.getName());
         return taskListItemView;
     }
+
 
 }

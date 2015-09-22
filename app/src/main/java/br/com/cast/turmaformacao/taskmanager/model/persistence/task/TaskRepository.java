@@ -6,8 +6,10 @@ import android.database.sqlite.SQLiteDatabase;
 
 import java.util.List;
 
+import br.com.cast.turmaformacao.taskmanager.model.entities.Label;
 import br.com.cast.turmaformacao.taskmanager.model.entities.Task;
 import br.com.cast.turmaformacao.taskmanager.model.persistence.DatabaseHelper;
+import br.com.cast.turmaformacao.taskmanager.model.persistence.label.LabelContract;
 
 public final class TaskRepository {
 
@@ -56,4 +58,18 @@ public final class TaskRepository {
         return values;
     }
 
+    public static Label getLabelByTaskId(long id){
+        DatabaseHelper databaseHelper = DatabaseHelper.getInstance();
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+
+        String where = TaskContract.ID + " = ? ";
+        String[] params = {String.valueOf(id)};
+
+        Cursor cursor = db.query(TaskContract.TABLE, TaskContract.COLUMNS, where, params, null, null, null);
+        Label label = TaskContract.getTask(cursor).getLabel();
+
+        db.close();
+        databaseHelper.close();
+        return label;
+    }
 }

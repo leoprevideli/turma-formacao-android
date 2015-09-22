@@ -8,6 +8,7 @@ public class Task implements Parcelable {
     private Long id;
     private String name;
     private String description;
+    private Label label;
 
     public Long getId() {
         return id;
@@ -15,11 +16,6 @@ public class Task implements Parcelable {
 
     public Task() {
         super();
-    }
-
-    public Task(Parcel imp) {
-        super();
-        readFromParcel(imp);
     }
 
 
@@ -43,24 +39,36 @@ public class Task implements Parcelable {
         this.description = description;
     }
 
+    public Label getLabel() {
+        return label;
+    }
+
+    public void setLabel(Label label) {
+        this.label = label;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Task)) return false;
 
         Task task = (Task) o;
 
-        if (id != null ? !id.equals(task.id) : task.id != null) return false;
-        if (name != null ? !name.equals(task.name) : task.name != null) return false;
-        return !(description != null ? !description.equals(task.description) : task.description != null);
+        if (getId() != null ? !getId().equals(task.getId()) : task.getId() != null) return false;
+        if (getName() != null ? !getName().equals(task.getName()) : task.getName() != null)
+            return false;
+        if (getDescription() != null ? !getDescription().equals(task.getDescription()) : task.getDescription() != null)
+            return false;
+        return !(getLabel() != null ? !getLabel().equals(task.getLabel()) : task.getLabel() != null);
 
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
+        int result = getId() != null ? getId().hashCode() : 0;
+        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
+        result = 31 * result + (getDescription() != null ? getDescription().hashCode() : 0);
+        result = 31 * result + (getLabel() != null ? getLabel().hashCode() : 0);
         return result;
     }
 
@@ -70,6 +78,7 @@ public class Task implements Parcelable {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
+                ", label=" + label +
                 '}';
     }
 
@@ -80,31 +89,26 @@ public class Task implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(id == null ? -1 : id);
-        dest.writeString(name == null ? "" : name);
-        dest.writeString(description == null ? "" : description);
+        dest.writeValue(this.id);
+        dest.writeString(this.name);
+        dest.writeString(this.description);
+        dest.writeParcelable(this.label, 0);
     }
 
-    public void readFromParcel(Parcel imp) {
-        id = imp.readLong();
-        id = id == -1 ? null : id;
-
-        name = imp.readString();
-        description = imp.readString();
+    protected Task(Parcel in) {
+        this.id = (Long) in.readValue(Long.class.getClassLoader());
+        this.name = in.readString();
+        this.description = in.readString();
+        this.label = in.readParcelable(Label.class.getClassLoader());
     }
 
-    public static final Parcelable.Creator<Task> CREATOR =
-            new Parcelable.Creator<Task>() {
-
-        @Override
+    public static final Creator<Task> CREATOR = new Creator<Task>() {
         public Task createFromParcel(Parcel source) {
             return new Task(source);
         }
 
-        @Override
         public Task[] newArray(int size) {
             return new Task[size];
         }
     };
-
 }

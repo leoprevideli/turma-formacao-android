@@ -1,5 +1,7 @@
 package br.com.cast.turmaformacao.taskmanager.controllers.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import br.com.cast.turmaformacao.taskmanager.R;
+import br.com.cast.turmaformacao.taskmanager.controllers.adapters.ColorListAdapter;
 import br.com.cast.turmaformacao.taskmanager.model.entities.User;
 import br.com.cast.turmaformacao.taskmanager.model.persistence.user.UserContract;
 import br.com.cast.turmaformacao.taskmanager.model.persistence.user.UserRepository;
@@ -42,17 +45,21 @@ public class LoginActivity extends AppCompatActivity {
                 user.setUsername(editTextUsername.getText().toString());
                 user.setPassword(editTextPassword.getText().toString());
 
-                boolean validUser = UserBusinessService.verifyUser(user);
-                if(validUser){
-                    //Entra!
-                    Intent redirectToTaskList = new Intent(LoginActivity.this, TaskListActivity.class);
-                    startActivity(redirectToTaskList);
-                    finish();
+                String requiredMessage = LoginActivity.this.getString(R.string.msg_required);
+                if (!FormHelper.checkRequireFields(requiredMessage, editTextUsername, editTextPassword)){
+                    boolean validUser = UserBusinessService.verifyUser(user);
+                    if(validUser){
+                        Intent redirectToTaskList = new Intent(LoginActivity.this, TaskListActivity.class);
+                        startActivity(redirectToTaskList);
+                    }
+                    else{
+                        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(LoginActivity.this);
+                        dialogBuilder.setTitle("Invalid combination!");
+                        dialogBuilder.setMessage("The user name or password is incorrect.");
+                        dialogBuilder.setNeutralButton(android.R.string.ok, null);
+                        dialogBuilder.show();
+                    }
                 }
-                else{
-                    //Dialog usuário inválido!
-                }
-
             }
         });
         User user = new User();
@@ -69,7 +76,6 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent redirectToCreateLogin = new Intent(LoginActivity.this, CreateLoginActivity.class);
                 startActivity(redirectToCreateLogin);
-                finish();
             }
         });
     }
