@@ -41,11 +41,12 @@ public class LabelListAdapter extends BaseAdapter {
         View view = context.getLayoutInflater().inflate(R.layout.list_item_label, parent, false);
 
         View viewLabel = (View) view.findViewById(R.id.viewLabel);
-
         int hexColor = android.graphics.Color
                 .parseColor(getItem(position).getColor().getHex());
-
         viewLabel.setBackgroundColor(hexColor);
+
+        TextView textViewLabelName = (TextView) view.findViewById(R.id.textViewLabelName);
+        textViewLabelName.setText(" - " + getItem(position).getName());
 
         return view;
     }
