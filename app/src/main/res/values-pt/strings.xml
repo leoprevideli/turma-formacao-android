@@ -26,5 +26,15 @@
     <string name="msg_delete_success">Registro excluído com sucesso!</string>
     <string name="msg_confirm_delete">Deseja excluir este registro?</string>
     <string name="lbl_signin">Cadastrar</string>
+    <string name="login">Login</string>
+    <string name="your_tasks">Suas tarefas</string>
+    <string name="create_new_task">Crie uma nova tarefa</string>
+    <string name="create_new_label">Crie uma nova label</string>
+    <string name="create_new_login">Crie um novo login</string>
+    <string name="lbl_zipcode">Zip Code</string>
+    <string name="lbl_street">Street</string>
+    <string name="lbl_neighborhood">Neighborhood</string>
+    <string name="lbl_city">City</string>
+    <string name="lbl_state">State</string>
 
 </resources>

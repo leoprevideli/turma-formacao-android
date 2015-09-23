@@ -8,6 +8,7 @@ public class User implements Parcelable {
     private Integer id;
     private String username;
     private String password;
+    private Address address;
 
     public Integer getId() {
         return id;

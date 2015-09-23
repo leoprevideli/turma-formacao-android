@@ -3,6 +3,7 @@ package br.com.cast.turmaformacao.taskmanager.controllers.activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -12,7 +13,9 @@ import android.widget.Toast;
 
 import br.com.cast.turmaformacao.taskmanager.R;
 import br.com.cast.turmaformacao.taskmanager.controllers.adapters.ColorListAdapter;
+import br.com.cast.turmaformacao.taskmanager.model.entities.Address;
 import br.com.cast.turmaformacao.taskmanager.model.entities.User;
+import br.com.cast.turmaformacao.taskmanager.model.http.AddressService;
 import br.com.cast.turmaformacao.taskmanager.model.persistence.user.UserContract;
 import br.com.cast.turmaformacao.taskmanager.model.persistence.user.UserRepository;
 import br.com.cast.turmaformacao.taskmanager.model.services.UserBusinessService;
@@ -33,6 +36,27 @@ public class LoginActivity extends AppCompatActivity {
         bindEditTextPassword();
         bindButtonLogin();
         bindButtonSignIn();
+
+        new GetAddressTask().execute("15995046");
+    }
+
+    private class GetAddressTask extends AsyncTask<String, Void, Address>{
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        //Recebe um PARAM(stringCep) e retorna um RESULT(address)
+        @Override
+        protected Address doInBackground(String... params) {
+            return AddressService.getAdressByZipCode(params[0]);
+        }
+
+        @Override
+        protected void onPostExecute(Address address){
+            onPostExecute(address);
+        }
     }
 
     private void bindButtonLogin() {

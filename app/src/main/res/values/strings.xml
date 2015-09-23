@@ -25,6 +25,15 @@
     <string name="msg_delete_success">Delete successful!</string>
     <string name="msg_confirm_delete">Want to delete this record?</string>
     <string name="lbl_signin">Sign In</string>
-    <string name="save">Save</string>
+    <string name="login">Login</string>
+    <string name="your_tasks">Your Tasks</string>
+    <string name="create_new_task">Create a new task</string>
+    <string name="create_new_label">Create a new label</string>
+    <string name="create_new_login">Create a new login</string>
+    <string name="lbl_zipcode">Zip Code</string>
+    <string name="lbl_street">Street</string>
+    <string name="lbl_neighborhood">Neighborhood</string>
+    <string name="lbl_city">City</string>
+    <string name="lbl_state">State</string>
 
 </resources>

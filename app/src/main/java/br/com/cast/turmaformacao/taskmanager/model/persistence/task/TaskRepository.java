@@ -2,6 +2,7 @@ package br.com.cast.turmaformacao.taskmanager.model.persistence.task;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.CursorJoiner;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
 import br.com.cast.turmaformacao.taskmanager.model.entities.Label;
 import br.com.cast.turmaformacao.taskmanager.model.entities.Task;
 import br.com.cast.turmaformacao.taskmanager.model.persistence.DatabaseHelper;
+import br.com.cast.turmaformacao.taskmanager.model.persistence.label.LabelContract;
 
 public final class TaskRepository {
 
@@ -71,4 +73,6 @@ public final class TaskRepository {
         databaseHelper.close();
         return label;
     }
+
+
 }

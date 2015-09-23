@@ -20,10 +20,40 @@
         android:layout_height="wrap_content"
         android:hint="@string/lbl_password"/>
 
+    <EditText
+        android:id="@+id/editTextZipCode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/lbl_zipcode"/>
+
+    <EditText
+        android:id="@+id/editTextStreet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/lbl_street"/>
+
+    <EditText
+        android:id="@+id/editTextNeighborhood"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/lbl_neighborhood"/>
+
+    <EditText
+        android:id="@+id/editTextCity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/lbl_city"/>
+
+    <EditText
+        android:id="@+id/editTextState"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/lbl_state"/>
+
     <Button
         android:id="@+id/buttonSaveNewUser"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/save" />
+        android:text="@string/lbl_save" />
 
 </LinearLayout>

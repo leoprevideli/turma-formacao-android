@@ -52,9 +52,9 @@ public class TaskListAdapter extends BaseAdapter {
         View viewId = (View) taskListItemView.findViewById(R.id.viewId);
 
         Label label = TaskRepository.getLabelByTaskId(task.getId());
-        Label labelTeste = LabelRepository.getById(label.getId());
+        Label labelColor = LabelRepository.getById(label.getId());
 
-        int hexColor = android.graphics.Color.parseColor(labelTeste.getColor().getHex());
+        int hexColor = android.graphics.Color.parseColor(labelColor.getColor().getHex());
         viewId.setBackgroundColor(hexColor);
 
         TextView textViewName = (TextView) taskListItemView.findViewById(R.id.textViewName);

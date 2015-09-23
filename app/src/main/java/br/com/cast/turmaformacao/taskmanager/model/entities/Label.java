@@ -67,15 +67,12 @@ public class Label implements Parcelable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Label label = (Label) o;
-
-        if (id != null ? !id.equals(label.id) : label.id != null) return false;
-        if (color != label.color) return false;
-        if (name != null ? !name.equals(label.name) : label.name != null) return false;
-        return !(description != null ? !description.equals(label.description) : label.description != null);
+        if(o instanceof Label){
+            if(((Label) o).getId().equals(this.getId())){
+                return true;
+            }
+        }
+        return false;
 
     }
 
