@@ -37,7 +37,7 @@ public class TaskFormActivity extends AppCompatActivity {
         setContentView(R.layout.activity_task_form);
         initTask();
 
-        list = LabelBusinessService.getAll();
+        list = LabelBusinessService.getAll(); 
         bindEditTextName();
         bindEditTextDescription();
         bindSpinner();
