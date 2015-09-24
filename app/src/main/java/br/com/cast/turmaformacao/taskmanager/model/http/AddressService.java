@@ -1,6 +1,5 @@
 package br.com.cast.turmaformacao.taskmanager.model.http;
 
-import android.os.AsyncTask;
 import android.util.Log;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,7 +24,7 @@ public final class AddressService {
         Address address = null;
 
         try{
-            java.net.URL url = new URL(URL + zipCode);
+            URL url = new URL(URL + zipCode);
             final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json"); //So aceita uma resposta em JSON
@@ -48,7 +47,7 @@ public final class AddressService {
             Log.e(AddressService.class.getName(), e.getMessage());
         }
 
-        return null;
+        return address;
     }
 
 }

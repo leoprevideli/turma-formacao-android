@@ -32,27 +32,10 @@ public class LoginActivity extends AppCompatActivity {
         bindButtonLogin();
         bindButtonSignIn();
 
-        //new GetAddressTask().execute("15995046");
+
     }
 
-    private class GetAddressTask extends AsyncTask<String, Void, Address>{
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        //Recebe um PARAM(stringCep) e retorna um RESULT(address)
-        @Override
-        protected Address doInBackground(String... params) {
-            return AddressService.getAdressByZipCode(params[0]);
-        }
-
-        @Override
-        protected void onPostExecute(Address address){
-            onPostExecute(address);
-        }
-    }
 
     private void bindButtonLogin() {
         buttonLogin = (Button) findViewById(R.id.buttonLogin);

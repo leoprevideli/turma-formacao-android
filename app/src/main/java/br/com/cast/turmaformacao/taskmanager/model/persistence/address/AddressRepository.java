@@ -15,12 +15,12 @@ public class AddressRepository {
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
         ContentValues values = AddressContract.getContentValues(address);
-        if (address.getId() == null) {
-            db.insert(LabelContract.TABLE, null, values);
+        if (address.getZipCode().equals("")) {
+            db.insert(AddressContract.TABLE, null, values);
         } else {
-            String where = LabelContract.ID + " = ? ";
-            String[] params = {address.getId().toString()};
-            db.update(LabelContract.TABLE, values, where, params);
+            String where = AddressContract.ZIPCODE + " = ? ";
+            String[] params = {address.getZipCode().toString()};
+            db.update(AddressContract.TABLE, values, where, params);
         }
 
         db.close();
@@ -31,7 +31,7 @@ public class AddressRepository {
         DatabaseHelper databaseHelper = DatabaseHelper.getInstance();
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
-        String where = AddressContract.ZIPCODE + " LIKE ? ";
+        String where = AddressContract.ZIPCODE + " = ? ";
         String[] params = {String.valueOf(zipCode)};
 
         Cursor cursor = db.query(AddressContract.TABLE, AddressContract.COLUMNS, where, params, null, null, null);

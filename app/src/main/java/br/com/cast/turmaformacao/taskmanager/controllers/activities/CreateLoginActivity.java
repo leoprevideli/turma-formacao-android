@@ -1,6 +1,8 @@
 package br.com.cast.turmaformacao.taskmanager.controllers.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.widget.Toast;
 import br.com.cast.turmaformacao.taskmanager.R;
 import br.com.cast.turmaformacao.taskmanager.model.entities.Address;
 import br.com.cast.turmaformacao.taskmanager.model.entities.User;
+import br.com.cast.turmaformacao.taskmanager.model.http.AddressService;
 import br.com.cast.turmaformacao.taskmanager.model.services.AddressBusinessService;
 import br.com.cast.turmaformacao.taskmanager.model.services.UserBusinessService;
 import br.com.cast.turmaformacao.taskmanager.util.FormHelper;
@@ -29,6 +32,7 @@ public class CreateLoginActivity extends AppCompatActivity {
     private EditText editTextState;
 
     private Button buttonSaveNewUser;
+    private Button buttonSearchZipCode;
     private User newUser;
 
     @Override
@@ -39,6 +43,7 @@ public class CreateLoginActivity extends AppCompatActivity {
         initUser();
         bindEditTexts();
         bindButtonSaveNewUser();
+        bindButtonSearchByZipCode();
     }
 
     private void bindEditTexts() {
@@ -60,20 +65,37 @@ public class CreateLoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String requiredMessage = CreateLoginActivity.this.getString(R.string.msg_required);
-                if (!FormHelper.checkRequireFields(requiredMessage, editTextNewUsername, editTextNewPassword)) {
+                if (!FormHelper.checkRequireFields(requiredMessage, editTextNewUsername, editTextNewPassword, editTextZipCode,
+                        editTextType, editTextStreet, editTextNeighborhood, editTextCity, editTextState)) {
                     bindNewUser();
 
                     Address existentAddress = AddressBusinessService.getByZipCode(newUser.getAddress().getZipCode());
                     if(existentAddress == null) {
                         AddressBusinessService.save(newUser.getAddress());
                         existentAddress = newUser.getAddress();
-                        newUser.setAddress(existentAddress);
+
                     }
+                    newUser.setAddress(existentAddress);
                     UserBusinessService.save(newUser);
                     Toast.makeText(CreateLoginActivity.this, R.string.msg_save_success, Toast.LENGTH_LONG).show();
 
                     Intent redirectToLogin = new Intent(CreateLoginActivity.this, LoginActivity.class);
                     startActivity(redirectToLogin);
+                }
+            }
+        });
+    }
+
+    private void bindButtonSearchByZipCode() {
+        buttonSearchZipCode = (Button) findViewById(R.id.buttonSearchZipCode);
+
+
+        buttonSearchZipCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String requiredMessage = CreateLoginActivity.this.getString(R.string.msg_required);
+                if (!FormHelper.checkRequireFields(requiredMessage, editTextZipCode)) {
+                    new GetAddressTask().execute(editTextZipCode.getText().toString());
                 }
             }
         });
@@ -100,8 +122,34 @@ public class CreateLoginActivity extends AppCompatActivity {
         newAddress.setState(editTextState.getText().toString());
 
         newUser.setAddress(newAddress);
-
     }
 
+    private class GetAddressTask extends AsyncTask<String, Void, Address> {
+
+        private ProgressDialog progressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog = new ProgressDialog(CreateLoginActivity.this);
+            progressDialog.setMessage(getString(R.string.searching_zipcode));
+            progressDialog.show();
+        }
+
+        //Recebe um PARAM(stringCep) e retorna um RESULT(address)
+        @Override
+        protected Address doInBackground(String... params) {
+            return AddressService.getAdressByZipCode(params[0]);
+        }
+
+        @Override
+        protected void onPostExecute(Address address){
+            progressDialog.dismiss();
+            editTextType.setText(address.getType());
+            editTextStreet.setText(address.getStreet());
+            editTextNeighborhood.setText(address.getNeighborhood());
+            editTextCity.setText(address.getCity());
+            editTextState.setText(address.getState());
+        }
+    }
 
 }

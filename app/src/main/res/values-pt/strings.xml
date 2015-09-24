@@ -31,11 +31,13 @@
     <string name="create_new_task">Crie uma nova tarefa</string>
     <string name="create_new_label">Crie uma nova label</string>
     <string name="create_new_login">Crie um novo login</string>
-    <string name="lbl_zipcode">Zip Code</string>
-    <string name="lbl_street">Street</string>
-    <string name="lbl_neighborhood">Neighborhood</string>
-    <string name="lbl_city">City</string>
-    <string name="lbl_state">State</string>
-    <string name="lbl_type">Type</string>
+    <string name="lbl_zipcode">CEP</string>
+    <string name="lbl_street">Rua</string>
+    <string name="lbl_neighborhood">Bairro</string>
+    <string name="lbl_city">Cidade</string>
+    <string name="lbl_state">Estado</string>
+    <string name="lbl_type">Tipo</string>
+    <string name="searching_zipcode">Buscando CEP...</string>
+    <string name="refresh">Refresh</string>
 
 </resources>

@@ -36,5 +36,7 @@
     <string name="lbl_city">City</string>
     <string name="lbl_state">State</string>
     <string name="lbl_type">Type</string>
+    <string name="searching_zipcode">Searching for ZipCode...</string>
+    <string name="refresh">Refresh</string>
 
 </resources>

@@ -19,11 +19,19 @@ public final class TaskBusinessService {
         return TaskRepository.getAll();
     }
 
+    public static Task getTask(long id){
+        return TaskRepository.getTask(id);
+    }
+
     public static void save(Task task) {
         TaskRepository.save(task);
     }
 
     public static void delete(Task selectedTask) {
-        TaskRepository.delete(selectedTask.getId());
+        TaskRepository.delete(selectedTask.get_id());
+    }
+
+    public static long getTaskByWebId(long webId){
+        return TaskRepository.getTaskByWebId(webId);
     }
 }

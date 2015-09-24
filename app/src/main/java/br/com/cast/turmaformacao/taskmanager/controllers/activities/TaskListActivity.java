@@ -1,8 +1,10 @@
 package br.com.cast.turmaformacao.taskmanager.controllers.activities;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ContextMenu;
@@ -22,6 +24,7 @@ import java.util.List;
 import br.com.cast.turmaformacao.taskmanager.R;
 import br.com.cast.turmaformacao.taskmanager.controllers.adapters.TaskListAdapter;
 import br.com.cast.turmaformacao.taskmanager.model.entities.Task;
+import br.com.cast.turmaformacao.taskmanager.model.http.TaskService;
 import br.com.cast.turmaformacao.taskmanager.model.services.TaskBusinessService;
 
 public class TaskListActivity extends AppCompatActivity {
@@ -57,9 +60,12 @@ public class TaskListActivity extends AppCompatActivity {
     }
 
     private void updateTaskList() {
-        List<Task> values = TaskBusinessService.findAll();
-        listViewTaskList.setAdapter(new TaskListAdapter(this, values));
         TaskListAdapter adapter = (TaskListAdapter) listViewTaskList.getAdapter();
+        if (adapter == null) {
+            adapter = new TaskListAdapter(this);
+            listViewTaskList.setAdapter(adapter);
+        }
+        adapter.setDataValues(TaskBusinessService.findAll());
         adapter.notifyDataSetChanged();
     }
 
@@ -75,6 +81,9 @@ public class TaskListActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.menu_add:
                 onMenuAddClick();
+                break;
+            case R.id.menu_refresh:
+                onMenuRefresh();
                 break;
         }
 
@@ -129,5 +138,46 @@ public class TaskListActivity extends AppCompatActivity {
     private void onMenuAddClick() {
         Intent goToTaskFormActivity = new Intent(TaskListActivity.this, TaskFormActivity.class);
         startActivity(goToTaskFormActivity);
+    }
+
+    private void onMenuRefresh() {
+        new GetTasksOnWeb().execute();
+    }
+
+    private class GetTasksOnWeb extends AsyncTask<Void, Void, List<Task>> {
+
+        private ProgressDialog progressDialog;
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog = new ProgressDialog(TaskListActivity.this);
+            progressDialog.setMessage("Searching tasks...");
+            progressDialog.show();
+        }
+
+        @Override
+        protected List<Task> doInBackground(Void... params) {
+            return TaskService.getAllTasks();
+        }
+
+        @Override
+        protected void onPostExecute(List<Task> tasks) {
+            saveWebTasks(tasks);
+            updateTaskList();
+            progressDialog.dismiss();
+        }
+    }
+
+    private void saveWebTasks(List<Task> tasks){
+        for(Task task : tasks){
+            long verifyTaskId = TaskBusinessService.getTaskByWebId(task.getWebId());
+            if(verifyTaskId > 0) { //update
+                task.set_id(verifyTaskId);
+                TaskBusinessService.save(task);
+            }
+            else { //save
+                TaskBusinessService.save(task);
+            }
+        }
     }
 }

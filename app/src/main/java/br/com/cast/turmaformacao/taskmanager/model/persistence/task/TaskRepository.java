@@ -23,11 +23,11 @@ public final class TaskRepository {
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
         ContentValues values = TaskContract.getContentValues(task);
-        if (task.getId() == null) {
+        if (task.get_id() == null) {
             db.insert(TaskContract.TABLE, null, values);
         } else {
-            String where = TaskContract.ID + " = ? ";
-            String[] params = {task.getId().toString()};
+            String where = TaskContract._ID + " = ? ";
+            String[] params = {task.get_id().toString()};
             db.update(TaskContract.TABLE, values, where, params);
         }
 
@@ -39,7 +39,7 @@ public final class TaskRepository {
         DatabaseHelper databaseHelper = DatabaseHelper.getInstance();
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
-        String where = TaskContract.ID + " = ? ";
+        String where = TaskContract._ID + " = ? ";
         String[] params = {String.valueOf(id)};
         db.delete(TaskContract.TABLE, where, params);
 
@@ -51,7 +51,7 @@ public final class TaskRepository {
         DatabaseHelper databaseHelper = DatabaseHelper.getInstance();
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
 
-        Cursor cursor = db.query(TaskContract.TABLE, TaskContract.COLUMNS, null, null, null, null, TaskContract.ID);
+        Cursor cursor = db.query(TaskContract.TABLE, TaskContract.COLUMNS, null, null, null, null, TaskContract._ID);
         List<Task> values = TaskContract.getTasks(cursor);
 
         db.close();
@@ -59,11 +59,26 @@ public final class TaskRepository {
         return values;
     }
 
+    public static Task getTask(long id){
+        DatabaseHelper databaseHelper = DatabaseHelper.getInstance();
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+
+        String where = TaskContract._ID + " = ? ";
+        String[] params = {String.valueOf(id)};
+
+        Cursor cursor = db.query(TaskContract.TABLE, TaskContract.COLUMNS, where, params, null, null, null);
+        Task task = TaskContract.getTask(cursor);
+
+        db.close();
+        databaseHelper.close();
+        return task;
+    }
+
     public static Label getLabelByTaskId(long id){
         DatabaseHelper databaseHelper = DatabaseHelper.getInstance();
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
 
-        String where = TaskContract.ID + " = ? ";
+        String where = TaskContract._ID + " = ? ";
         String[] params = {String.valueOf(id)};
 
         Cursor cursor = db.query(TaskContract.TABLE, TaskContract.COLUMNS, where, params, null, null, null);
@@ -74,5 +89,18 @@ public final class TaskRepository {
         return label;
     }
 
+    public static long getTaskByWebId(long webId){
+        DatabaseHelper databaseHelper = DatabaseHelper.getInstance();
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
 
+        String where = TaskContract.IDWEB + " = ? ";
+        String[] params = {String.valueOf(webId)};
+
+        Cursor cursor = db.query(TaskContract.TABLE, TaskContract.COLUMNS, where, params, null, null, null);
+        long idWebRetorno = TaskContract.getTask(cursor).get_id();
+
+        db.close();
+        databaseHelper.close();
+        return idWebRetorno;
+    }
 }
