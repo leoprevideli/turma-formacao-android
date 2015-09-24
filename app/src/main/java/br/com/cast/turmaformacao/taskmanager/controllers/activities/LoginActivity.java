@@ -1,7 +1,6 @@
 package br.com.cast.turmaformacao.taskmanager.controllers.activities;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,15 +8,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import br.com.cast.turmaformacao.taskmanager.R;
-import br.com.cast.turmaformacao.taskmanager.controllers.adapters.ColorListAdapter;
 import br.com.cast.turmaformacao.taskmanager.model.entities.Address;
 import br.com.cast.turmaformacao.taskmanager.model.entities.User;
 import br.com.cast.turmaformacao.taskmanager.model.http.AddressService;
-import br.com.cast.turmaformacao.taskmanager.model.persistence.user.UserContract;
-import br.com.cast.turmaformacao.taskmanager.model.persistence.user.UserRepository;
 import br.com.cast.turmaformacao.taskmanager.model.services.UserBusinessService;
 import br.com.cast.turmaformacao.taskmanager.util.FormHelper;
 
@@ -37,7 +32,7 @@ public class LoginActivity extends AppCompatActivity {
         bindButtonLogin();
         bindButtonSignIn();
 
-        new GetAddressTask().execute("15995046");
+        //new GetAddressTask().execute("15995046");
     }
 
     private class GetAddressTask extends AsyncTask<String, Void, Address>{

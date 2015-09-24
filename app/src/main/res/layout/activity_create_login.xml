@@ -27,6 +27,12 @@
         android:hint="@string/lbl_zipcode"/>
 
     <EditText
+        android:id="@+id/editTextType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/lbl_type"/>
+
+    <EditText
         android:id="@+id/editTextStreet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -16,4 +16,5 @@ public final class UserBusinessService {
     public static boolean verifyUser(User user) {
         return UserRepository.verifyUser(user);
     }
+
 }

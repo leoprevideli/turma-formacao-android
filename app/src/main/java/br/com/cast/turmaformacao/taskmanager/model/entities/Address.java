@@ -1,8 +1,13 @@
 package br.com.cast.turmaformacao.taskmanager.model.entities;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Address {
+public class Address implements Parcelable{
+
+    private Long id;
 
     @JsonProperty("cep")
     private String zipCode;
@@ -24,6 +29,14 @@ public class Address {
 
     public Address() {
         super();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getZipCode() {
@@ -81,6 +94,7 @@ public class Address {
 
         Address address = (Address) o;
 
+        if (getId() != address.getId()) return false;
         if (getZipCode() != null ? !getZipCode().equals(address.getZipCode()) : address.getZipCode() != null)
             return false;
         if (getType() != null ? !getType().equals(address.getType()) : address.getType() != null)
@@ -97,7 +111,8 @@ public class Address {
 
     @Override
     public int hashCode() {
-        int result = getZipCode() != null ? getZipCode().hashCode() : 0;
+        int result = getId() != null ? getId().hashCode() : 0;
+        result = 31 * result + (getZipCode() != null ? getZipCode().hashCode() : 0);
         result = 31 * result + (getType() != null ? getType().hashCode() : 0);
         result = 31 * result + (getStreet() != null ? getStreet().hashCode() : 0);
         result = 31 * result + (getNeighborhood() != null ? getNeighborhood().hashCode() : 0);
@@ -109,7 +124,8 @@ public class Address {
     @Override
     public String toString() {
         return "Address{" +
-                "zipCode='" + zipCode + '\'' +
+                "id=" + id +
+                ", zipCode='" + zipCode + '\'' +
                 ", type='" + type + '\'' +
                 ", street='" + street + '\'' +
                 ", neighborhood='" + neighborhood + '\'' +
@@ -117,4 +133,40 @@ public class Address {
                 ", state='" + state + '\'' +
                 '}';
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.id);
+        dest.writeString(this.zipCode);
+        dest.writeString(this.type);
+        dest.writeString(this.street);
+        dest.writeString(this.neighborhood);
+        dest.writeString(this.city);
+        dest.writeString(this.state);
+    }
+
+    protected Address(Parcel in) {
+        this.id = in.readLong();
+        this.zipCode = in.readString();
+        this.type = in.readString();
+        this.street = in.readString();
+        this.neighborhood = in.readString();
+        this.city = in.readString();
+        this.state = in.readString();
+    }
+
+    public static final Creator<Address> CREATOR = new Creator<Address>() {
+        public Address createFromParcel(Parcel source) {
+            return new Address(source);
+        }
+
+        public Address[] newArray(int size) {
+            return new Address[size];
+        }
+    };
 }

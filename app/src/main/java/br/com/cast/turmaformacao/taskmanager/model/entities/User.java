@@ -34,23 +34,36 @@ public class User implements Parcelable {
         this.password = password;
     }
 
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof User)) return false;
 
         User user = (User) o;
 
-        if (!username.equals(user.username)) return false;
-        return password.equals(user.password);
+        if (getId() != null ? !getId().equals(user.getId()) : user.getId() != null) return false;
+        if (getUsername() != null ? !getUsername().equals(user.getUsername()) : user.getUsername() != null)
+            return false;
+        if (getPassword() != null ? !getPassword().equals(user.getPassword()) : user.getPassword() != null)
+            return false;
+        return !(getAddress() != null ? !getAddress().equals(user.getAddress()) : user.getAddress() != null);
 
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (username != null ? username.hashCode() : 0);
-        result = 31 * result + (password != null ? password.hashCode() : 0);
+        int result = getId() != null ? getId().hashCode() : 0;
+        result = 31 * result + (getUsername() != null ? getUsername().hashCode() : 0);
+        result = 31 * result + (getPassword() != null ? getPassword().hashCode() : 0);
+        result = 31 * result + (getAddress() != null ? getAddress().hashCode() : 0);
         return result;
     }
 
@@ -60,6 +73,7 @@ public class User implements Parcelable {
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", address=" + address +
                 '}';
     }
 
@@ -74,6 +88,7 @@ public class User implements Parcelable {
         dest.writeValue(this.id);
         dest.writeString(this.username);
         dest.writeString(this.password);
+        dest.writeParcelable(this.address, flags);
     }
 
     public User() {
@@ -83,9 +98,10 @@ public class User implements Parcelable {
         this.id = (Integer) in.readValue(Integer.class.getClassLoader());
         this.username = in.readString();
         this.password = in.readString();
+        this.address = in.readParcelable(Address.class.getClassLoader());
     }
 
-    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+    public static final Creator<User> CREATOR = new Creator<User>() {
         public User createFromParcel(Parcel source) {
             return new User(source);
         }
