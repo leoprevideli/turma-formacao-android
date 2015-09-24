@@ -144,7 +144,7 @@ public class TaskListActivity extends AppCompatActivity {
         new GetTasksOnWeb().execute();
     }
 
-    private class GetTasksOnWeb extends AsyncTask<Void, Void, List<Task>> {
+    private class GetTasksOnWeb extends AsyncTask<Void, Void, Void> {
 
         private ProgressDialog progressDialog;
 
@@ -156,28 +156,15 @@ public class TaskListActivity extends AppCompatActivity {
         }
 
         @Override
-        protected List<Task> doInBackground(Void... params) {
-            return TaskService.getAllTasks();
+        protected Void doInBackground(Void... params) {
+            TaskBusinessService.sincronizeTasks();
+            return null;
         }
 
         @Override
-        protected void onPostExecute(List<Task> tasks) {
-            saveWebTasks(tasks);
+        protected void onPostExecute(Void param) {
             updateTaskList();
             progressDialog.dismiss();
-        }
-    }
-
-    private void saveWebTasks(List<Task> tasks){
-        for(Task task : tasks){
-            long verifyTaskId = TaskBusinessService.getTaskByWebId(task.getWebId());
-            if(verifyTaskId > 0) { //update
-                task.set_id(verifyTaskId);
-                TaskBusinessService.save(task);
-            }
-            else { //save
-                TaskBusinessService.save(task);
-            }
         }
     }
 }
